@@ -12,7 +12,7 @@ export default function Counter() {
 
   return (
     <div>
-      <div className={styles.row}>
+      <div>
         
       </div>
     </div>
