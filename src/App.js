@@ -8,8 +8,9 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import LoginPage from './pages/LoginPage';
-import Cart from './features/cart/Cart';
 import CartPage from './pages/CartPage';
+import Checkout from './pages/Checkout';
+import ProductDetailsPage from './pages/ProductDetailsPage';
 
 const router = createBrowserRouter([
   {
@@ -24,10 +25,17 @@ const router = createBrowserRouter([
     path: "/signup",
     element: <SignupPage></SignupPage>,
   },
-  //ONLY FOR TESTING - THEN PAGE WILL BE ADDED
   {
     path: "/cart",
     element: <CartPage></CartPage>,
+  },
+  {
+    path: "/checkout",
+    element: <Checkout></Checkout>,
+  },
+  {
+    path: "/product-details",
+    element: <ProductDetailsPage></ProductDetailsPage>,
   },
 ]);
 
