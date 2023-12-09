@@ -286,24 +286,35 @@ export default function ProductList() {
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts)
   const [filter, setFilter] = useState({})
+  const [sort, setSort] = useState({})
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
 
 
   const handleFilter = (e, section, option) => {
-    const newFilter = { ...filter, [section.id]: option.value }
+    const newFilter = {...filter}
+    if (e.target.checked) {
+      if(newFilter[section.id]){
+        newFilter[section.id].push(option.value) 
+      } else {
+        newFilter[section.id] = [option.value]
+      }
+    } else{
+      const index = newFilter[section.id].findIndex(el=>el===option.value)
+      newFilter[section.id].splice(index,1)
+    }
+    console.log({newFilter})
     setFilter(newFilter)
     dispatch(fetchProductsByFiltersAsync(newFilter))
-    console.log(section.id, option.value)
   }
   const handleSort = (e, option) => {
-    const newFilter = { ...filter, _sort: option.sort, _order: option.order }
-    setFilter(newFilter)
-    dispatch(fetchProductsByFiltersAsync(newFilter))
+    const sort = {_sort: option.sort, _order: option.order }
+    setSort(sort)
+    // dispatch(fetchProductsByFiltersAsync(newFilter))
   }
 
   useEffect(() => {
-    dispatch(fetchAllProductsAsync())
-  }, [dispatch])
+    dispatch(fetchProductsByFiltersAsync({filter,sort}))
+  }, [dispatch,filter,sort])
 
   return (
     <div>
@@ -615,7 +626,8 @@ const ProductGrid = ({ products }) => {
 
       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
         {products.map((product) => (
-          <Link to={'product-details'}> <div key={product.id} className="group relative border-solid p-2 border-2 border-gray-200">
+          <div key={product.id} >
+          <Link to={'product-details'}> <div className="group relative border-solid p-2 border-2 border-gray-200">
             <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
               <img
                 src={product.thumbnail}
@@ -643,6 +655,7 @@ const ProductGrid = ({ products }) => {
               </div>
             </div>
           </div></Link>
+          </div>
         ))}
       </div>
     </div>
