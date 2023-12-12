@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Dialog, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { deleteItemFromCartAsync, selectItems, updateCartAsync } from './cartSlice';
 
 
@@ -22,6 +22,8 @@ export default function Cart() {
   }
 
   return (
+<>
+{!items.length && <Navigate to={"/"} replace={true}></Navigate>}
 
     <div className='bg-white mx-auto mt-12 max-w-7xl px-4 sm:px-6 lg:px-8'>
 
@@ -111,5 +113,6 @@ export default function Cart() {
         </div>
       </div>
     </div>
+</>
   );
 }
