@@ -4,6 +4,8 @@ import { RadioGroup } from '@headlessui/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllProductByIdAsync, selectProductById } from '../productSlice'
 import { useParams } from 'react-router-dom'
+import { addToCartAsync } from '../../cart/cartSlice'
+import { selectLoggedInUser } from '../../auth/authSlice'
 
 // TODO: in server data we will add colors,sizes,highlights to each product
 const colors = [
@@ -17,7 +19,7 @@ const highlights = [
   'Pre-washed & pre-shrunk',
   'Ultra-soft 100% cotton',
 ]
-const sizes =  [
+const sizes = [
   { name: 'XXS', inStock: false },
   { name: 'XS', inStock: true },
   { name: 'S', inStock: true },
@@ -36,17 +38,23 @@ export default function ProductDetails() {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const product = useSelector(selectProductById)
+  const user = useSelector(selectLoggedInUser)
   const dispatch = useDispatch()
   const params = useParams()
 
-  useEffect(()=>{
+  const handleCart = (e) => {
+    e.preventDefault()
+    dispatch(addToCartAsync({ ...product, quantity: 1, user:user.id }))
+  }
+
+  useEffect(() => {
     dispatch(fetchAllProductByIdAsync(params.id))
-  },[dispatch,params.id])
+  }, [dispatch, params.id])
 
   return (
-    
+
     <div className="pt-6">
-   {product && <div className="bg-white">
+      {product && <div className="bg-white">
         <nav aria-label="Breadcrumb">
           <ol role="list" className="mx-auto flex max-w-2xl items-center space-x-2 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             {product.breadcrumbs && product.breadcrumbs.map((breadcrumb) => (
@@ -130,15 +138,15 @@ export default function ProductDetails() {
                     <StarIcon
                       key={rating}
                       className={classNames(
-                       product.rating > rating ? 'text-gray-900' : 'text-gray-200',
+                        product.rating > rating ? 'text-gray-900' : 'text-gray-200',
                         'h-5 w-5 flex-shrink-0'
                       )}
                       aria-hidden="true"
                     />
                   ))}
                 </div>
-                <p className="sr-only">{ product.rating} out of 5 stars</p>
-                
+                <p className="sr-only">{product.rating} out of 5 stars</p>
+
               </div>
             </div>
 
@@ -242,6 +250,7 @@ export default function ProductDetails() {
               </div>
 
               <button
+                onClick={handleCart}
                 type="submit"
                 className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               >
@@ -283,7 +292,7 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
-    </div>}
+      </div>}
     </div>
   )
 }
