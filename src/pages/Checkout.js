@@ -7,6 +7,7 @@ import { deleteItemFromCartAsync, selectItems, updateCartAsync } from '../featur
 import { useForm } from 'react-hook-form';
 import { selectLoggedInUser, updateUserAsync } from '../features/auth/authSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
+import { selectUserInfo } from '../features/user/userSlice';
 
 
 
@@ -17,7 +18,7 @@ const Checkout = () => {
     const dispatch = useDispatch()
     const { register, handleSubmit, reset, watch, formState: { errors }, } = useForm()
 
-    const user = useSelector(selectLoggedInUser)
+    const user = useSelector(selectUserInfo)
     const items = useSelector(selectItems)
     const currentOrder = useSelector(selectCurrentOrder)
     const totalAmount = items.reduce((amount, item) => item.price * item.quantity + amount, 0)
