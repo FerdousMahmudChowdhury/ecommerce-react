@@ -6,7 +6,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { deleteItemFromCartAsync, selectItems, updateCartAsync } from '../features/cart/cartSlice';
 import { useForm } from 'react-hook-form';
 import { selectLoggedInUser, updateUserAsync } from '../features/auth/authSlice';
-import { createOrderAsync } from '../features/order/orderSlice';
+import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
 
 
 
@@ -19,6 +19,7 @@ const Checkout = () => {
 
     const user = useSelector(selectLoggedInUser)
     const items = useSelector(selectItems)
+    const currentOrder = useSelector(selectCurrentOrder)
     const totalAmount = items.reduce((amount, item) => item.price * item.quantity + amount, 0)
     const totalItems = items.reduce((total, item) => item.quantity + total, 0)
     const [selectedAddresses, setSelectedAddresses] = useState(null)
@@ -37,16 +38,22 @@ const Checkout = () => {
         setPaymentMethod(e.target.value)
     }
     const handleOrder = (e) => {
-        const order = {items,totalAmount,totalItems,user,paymentMethod,selectedAddresses}
-        dispatch(createOrderAsync(order))
-        // TODO : redirect to order success page
-        // TODO : clear cart after order
-        // TODO : on server change the stock number of items
+        if (selectedAddresses && paymentMethod) {
+            const order = { items, totalAmount, totalItems, user, paymentMethod, selectedAddresses, status: 'pending' }
+            dispatch(createOrderAsync(order))
+            // TODO : redirect to order success page
+            // TODO : clear cart after order
+            // TODO : on server change the stock number of items
+        } else {
+            //TODO: we can use proper messaging popup here
+            alert('Enter Address And Payment Method')
+        }
     }
 
     return (
         <>
             {!items.length && <Navigate to={"/"} replace={true}></Navigate>}
+            {currentOrder && <Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>}
             <div className="mx-auto max-w-7xl px-0 sm:px-0 lg:px-0 ">
 
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
@@ -186,7 +193,7 @@ const Checkout = () => {
                                         Choose from Existing address
                                     </p>
                                     <ul role="list">
-                                        {user.addresses.map((address,index) => (
+                                        {user.addresses.map((address, index) => (
                                             <li key={address.phone} className="flex justify-between gap-x-6 py-5 px-5 border-2 border-gray-200">
                                                 <div className="flex min-w-0 gap-x-4">
                                                     <input
