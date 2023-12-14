@@ -6,7 +6,6 @@ import { fetchProductByIdAsync, selectProductById } from '../productSlice'
 import { useParams } from 'react-router-dom'
 import { addToCartAsync } from '../../cart/cartSlice'
 import { selectLoggedInUser } from '../../auth/authSlice'
-import { selectUserInfo } from '../../user/userSlice'
 
 // TODO: in server data we will add colors,sizes,highlights to each product
 const colors = [

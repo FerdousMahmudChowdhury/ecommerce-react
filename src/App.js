@@ -92,27 +92,27 @@ const router = createBrowserRouter([
   },
   {
     path: "order-success/:id",
-    element:<OrderSuccessPage></OrderSuccessPage>
+    element: <OrderSuccessPage></OrderSuccessPage>
   },
   {
     path: "orders",
-    element:<UserOrdersPage></UserOrdersPage>
+    element: <UserOrdersPage></UserOrdersPage>
   },
   {
     path: "profile",
-    element:<UserProfilePage></UserProfilePage>
+    element: <UserProfilePage></UserProfilePage>
   },
   {
     path: "logout",
-    element:<Logout></Logout>
+    element: <Logout></Logout>
   },
   {
     path: "forgot-password",
-    element:<ForgotPasswordPage></ForgotPasswordPage>
+    element: <ForgotPasswordPage></ForgotPasswordPage>
   },
   {
     path: "*",
-    element:<PageNotFound></PageNotFound>
+    element: <PageNotFound></PageNotFound>
   },
 ]);
 
@@ -124,7 +124,7 @@ function App() {
       dispatch(fetchItemsByUsersIdAsync(user.id))
       dispatch(fetchLoggedInUserAsync(user.id))
     }
-  }, [dispatch,user])
+  }, [dispatch, user])
 
   return (
     <div className="App">

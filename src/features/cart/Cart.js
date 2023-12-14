@@ -1,15 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { Dialog, Transition } from '@headlessui/react'
-import { XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, Navigate } from 'react-router-dom';
 import { deleteItemFromCartAsync, selectItems, updateCartAsync } from './cartSlice';
 
 
 export default function Cart() {
   const dispatch = useDispatch();
-  const [open, setOpen] = useState(true)
   const items = useSelector(selectItems)
   const totalAmount = items.reduce((amount, item) => item.price * item.quantity + amount, 0)
   const totalItems = items.reduce((total, item) => item.quantity + total, 0)
@@ -104,7 +100,6 @@ export default function Cart() {
             <Link to={'/'}> <button
               type="button"
               className="font-medium text-indigo-600 hover:text-indigo-500"
-              onClick={() => setOpen(false)}
             >
               Continue Shopping
               <span aria-hidden="true"> &rarr;</span>
