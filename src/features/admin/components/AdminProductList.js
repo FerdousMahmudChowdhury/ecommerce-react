@@ -1,7 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { ChevronLeftIcon, ChevronRightIcon, StarIcon } from '@heroicons/react/20/solid'
-import { fetchBrandsAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllBrands, selectAllCategories, selectAllProducts, selectTotalItems } from '../productSlice';
+import { ChevronLeftIcon, ChevronRightIcon, PencilSquareIcon, StarIcon } from '@heroicons/react/20/solid'
+import { fetchBrandsAsync, fetchCategoriesAsync, fetchProductsByFiltersAsync, selectAllBrands, selectAllCategories, selectAllProducts, selectTotalItems } from '../../product/productSlice';
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
@@ -18,12 +18,13 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function ProductList() {
+export default function AdminProductList() {
   const dispatch = useDispatch();
   const products = useSelector(selectAllProducts)
   const brands = useSelector(selectAllBrands)
   const categories = useSelector(selectAllCategories)
   const totalItems = useSelector(selectTotalItems)
+
   const filters = [
     {
       id: 'brands',
@@ -74,7 +75,6 @@ export default function ProductList() {
   useEffect(() => {
     const pagination = { _page: page, _limit: ITEMS_PER_PAGE }
     dispatch(fetchProductsByFiltersAsync({ filter, sort, pagination }))
-    //TODO : server will filter deleted products
   }, [dispatch, filter, sort, page])
 
   useEffect(() => {
@@ -168,6 +168,8 @@ export default function ProductList() {
                   <div className="lg:col-span-3">
                     {/* Your content */}
                     {/* this is products list page */}
+                    <div>
+                    <Link to={"/admin/product-form"}>  <button  className="rounded-md my-5 mx-10 bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"> Add New Product</button></Link></div>
                     <ProductGrid products={products}></ProductGrid>
                   </div>
                 </div>
@@ -408,6 +410,9 @@ const ProductGrid = ({ products }) => {
       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
         {products.map((product) => (
           <div key={product.id} >
+            <div>
+
+          
             <Link to={`product-details/${product.id}`}> <div className="group relative border-solid p-2 border-2 border-gray-200">
               <div className="min-h-60 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-60">
                 <img
@@ -435,12 +440,15 @@ const ProductGrid = ({ products }) => {
                   <p className="text-sm font-medium text-gray-400 line-through">${product.price}</p>
                 </div>
               </div>
-           
               {product.deleted && <div>
                 <p className='text-sm text-red-400'>product deleted</p>
-              </div>} 
-            </div></Link>
+              </div>}
+               </div>
+            </Link >   <div>
+             <Link to={`/admin/product-form/edit/${product.id}`}><button  className="rounded-md my-3 bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><PencilSquareIcon className='h-5 w-5 inline'/> Edit Product </button></Link> </div>
+            </div>
           </div>
+          
         ))}
       </div>
     </div>

@@ -6,11 +6,10 @@ import {
 } from '../authSlice';
 import { Link, Navigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { selectUserInfo } from '../../user/userSlice';
 
 export default function Signup() {
   const dispatch = useDispatch();
-  const { register, handleSubmit, watch, formState: { errors }, } = useForm()
+  const { register, handleSubmit, formState: { errors }, } = useForm()
   const user = useSelector(selectLoggedInUser)
 
   console.log(errors,user)
@@ -33,7 +32,8 @@ export default function Signup() {
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form noValidate className="space-y-6" onSubmit={handleSubmit((data) => {
-            dispatch(createUserAsync({email:data.email,password:data.password,addresses:[]}))
+            dispatch(createUserAsync({email:data.email,password:data.password,addresses:[],role:'user'}))
+            //
             console.log(data)
           })}>
             <div>
