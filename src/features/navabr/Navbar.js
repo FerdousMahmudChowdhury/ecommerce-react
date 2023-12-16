@@ -10,12 +10,12 @@ import { selectLoggedInUser } from '../auth/authSlice';
 const navigation = [
     { name: 'Dashboard', link: '#', user: true },
     { name: 'Team', link: '#', user: true },
-    { name: 'Admin', link: '/admin' , admin: true},
-    { name: 'Orders', link: '/admin/orders' , admin: true},
+    { name: 'Products', link: '/admin' , admin: true},
 ]
 const userNavigation = [
     { name: 'My Profile', link: '/profile' },
     { name: 'My Orders', link: '/orders' },
+    { name: 'All Orders', link: '/admin/orders' , admin: true},
     { name: 'Sign out', link: '/logout' },
 ]
 function classNames(...classes) {
@@ -38,6 +38,7 @@ const Navbar = ({ children }) => {
                                             <Link to={'/'}>
                                                 <img
                                                 className="h-8 w-8"
+                                                // TODO : logo
                                                 src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                                                 alt="Your Company"
                                                 />
