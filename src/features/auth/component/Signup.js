@@ -12,7 +12,7 @@ export default function Signup() {
   const { register, handleSubmit, formState: { errors }, } = useForm()
   const user = useSelector(selectLoggedInUser)
 
-  console.log(errors,user)
+ 
 
   return (
     <>

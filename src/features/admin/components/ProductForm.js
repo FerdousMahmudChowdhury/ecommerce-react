@@ -122,7 +122,7 @@ const ProductForm = () => {
                                         required: "brand is required"
                                     })}>
                                         <option value={''}>--choose brand--</option>
-                                        {brands.map(brand => <option value={brand.value}>{brand.label}</option>)}
+                                        {brands.map(brand => <option  key={brand.value} value={brand.value}>{brand.label}</option>)}
                                     </select>
                                 </div>
                             </div>
@@ -135,7 +135,7 @@ const ProductForm = () => {
                                         required: "category is required"
                                     })}>
                                         <option value={''}>--choose category--</option>
-                                        {categories.map(cat => <option value={cat.value}>{cat.label}</option>)}
+                                        {categories.map(cat => <option  key={cat.value} value={cat.value}>{cat.label}</option>)}
                                     </select>
                                 </div>
                             </div>

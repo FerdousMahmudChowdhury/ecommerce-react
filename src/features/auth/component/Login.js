@@ -10,7 +10,7 @@ export default function Login() {
   const user = useSelector(selectLoggedInUser)
   const { register, handleSubmit, formState: { errors }, } = useForm()
 
-  console.log(error)
+
 
   return (
     <>
