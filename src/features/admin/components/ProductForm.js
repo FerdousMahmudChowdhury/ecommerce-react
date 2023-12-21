@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import Modal from '../../common/Modal';
+import { useAlert } from 'react-alert';
 
 const ProductForm = () => {
   const [openModal,setOpenModal] = useState(null)
@@ -15,7 +16,7 @@ const ProductForm = () => {
     const params = useParams()
     const selectedProduct = useSelector(selectProductById)
    
-
+const alert = useAlert()
     useEffect(() => {
         if (params.id) {
             dispatch(fetchProductByIdAsync(params.id))
@@ -45,6 +46,7 @@ const ProductForm = () => {
         const product = {...selectedProduct}
         product.deleted = true 
         dispatch(updateProductAsync(product))
+        
     }
 
     return (
@@ -66,9 +68,13 @@ const ProductForm = () => {
                     product.id = params.id
                     product.rating = selectedProduct.rating || 0
                     dispatch(updateProductAsync(product))
+                    alert.success('Product Updated');
                     reset()
                 } else {
                     dispatch(createProductAsync(product))
+                    alert.success('Product Created');
+                    // TODO: these alerts should check if API failed
+                    reset()
                     //TODO : on product successfully added clear fields and show a massage
                 }
             })} >
@@ -77,7 +83,7 @@ const ProductForm = () => {
                         <h2 className="text-base font-semibold leading-7 text-gray-900">Add Product</h2>
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                            {selectedProduct.deleted && <h2 className='text-red-500'>This Product is Deleted</h2>}
+                        {selectedProduct && selectedProduct.deleted && <h2 className="text-red-500 sm:col-span-6">This product is deleted</h2>}
                             <div className="sm:col-span-full">
                                 <label htmlFor="title" className="block text-sm font-medium leading-6 text-gray-900">
                                     Product Name
@@ -377,7 +383,7 @@ const ProductForm = () => {
                 </div>
             </form>
         </div>
-        <Modal
+        {selectedProduct && <Modal
                             title={`Delete ${selectedProduct?.title}`}
                             message="Are you sure you want to delete this Product ?"
                             dangerOption="Delete"
@@ -385,7 +391,7 @@ const ProductForm = () => {
                             dangerAction={handleDelete}
                             cancelAction={()=>setOpenModal(null)}
                             showModal={openModal}
-                          ></Modal>
+                            ></Modal>}
         </>
     );
 };

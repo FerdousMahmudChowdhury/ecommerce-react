@@ -2,18 +2,20 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchLoggedInUserOrderAsync, selectUserInfo, selectUserOrders } from '../userSlice';
 import { discountedPrice } from '../../../app/constants';
+import { Grid } from 'react-loader-spinner';
 
 export default function UserOrders() {
   const dispatch = useDispatch();
-  const userInfo = useSelector(selectUserInfo);
   const orders = useSelector(selectUserOrders)
+  const userInfo = useSelector(selectUserInfo);
+
   useEffect(() => {
     dispatch(fetchLoggedInUserOrderAsync(userInfo.id));
   }, [dispatch, userInfo]);
 
   return (
     <div>
-      {orders.map(order => (
+      {orders && orders.map((order) => (
      <div key={order.id}>
         <div className='bg-white mx-auto mt-12 max-w-7xl px-4 sm:px-6 lg:px-8'>
           <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
@@ -87,6 +89,7 @@ export default function UserOrders() {
           </div>
         </div>
       </div>))}
+   
     </div>
   );
 }

@@ -13,7 +13,7 @@ import Checkout from './pages/Checkout';
 import ProductDetailsPage from './pages/ProductDetailsPage';
 import Protected from './features/auth/component/Protected';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchItemsByUsersIdAsync } from './features/cart/cartSlice';
+import { fetchItemsByUserIdAsync } from './features/cart/cartSlice';
 import { selectLoggedInUser } from './features/auth/authSlice';
 import PageNotFound from './pages/404';
 import OrderSuccessPage from './pages/OrderSuccessPage';
@@ -149,10 +149,10 @@ function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     if (user) {
-      dispatch(fetchItemsByUsersIdAsync(user.id))
-      dispatch(fetchLoggedInUserAsync(user.id))
+      dispatch(fetchItemsByUserIdAsync());
+      dispatch(fetchLoggedInUserAsync());
     }
-  }, [dispatch, user])
+  }, [dispatch,user])
 
   return (
     <div className="App">

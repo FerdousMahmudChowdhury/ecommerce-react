@@ -41,7 +41,7 @@ export default function ProductDetails() {
   const [selectedColor, setSelectedColor] = useState(colors[0])
   const [selectedSize, setSelectedSize] = useState(sizes[2])
   const product = useSelector(selectProductById)
-  const user = useSelector(selectLoggedInUser)
+  const user = useSelector(selectLoggedInUser);
   const items = useSelector(selectItems)
   const status = useSelector(selectProductListStatus)
   const dispatch = useDispatch()
@@ -52,7 +52,7 @@ export default function ProductDetails() {
     e.preventDefault();
     if (items.findIndex((item) => item.product.id === product.id) < 0) {
       console.log({ items, product });
-      const newItem = {    product: product.id, quantity: 1, user: user.id, };
+      const newItem = {    product: product.id,  quantity: 1};
 
       dispatch(addToCartAsync(newItem));
       // TODO: it will be based on server response of backend
