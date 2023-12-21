@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
-import { deleteItemFromCartAsync, selectCartStatus, selectItems, updateCartAsync } from './cartSlice';
+import { deleteItemFromCartAsync, selectCartLoaded, selectCartStatus, selectItems, updateCartAsync } from './cartSlice';
 import { discountedPrice } from '../../app/constants';
 import { Grid } from 'react-loader-spinner';
 import Modal from '../common/Modal';
@@ -12,6 +12,8 @@ export default function Cart() {
   const dispatch = useDispatch();
   const items = useSelector(selectItems)
   const status = useSelector(selectCartStatus)
+  
+  const cartLoaded = useSelector(selectCartLoaded)
 
   const totalAmount = items.reduce(
     (amount, item) => discountedPrice(item.product) * item.quantity + amount,
@@ -27,8 +29,7 @@ export default function Cart() {
 
   return (
 <>
-{!items.length && <Navigate to={"/"} replace={true}></Navigate>}
-
+{!items.length && cartLoaded && <Navigate to="/" replace={true}></Navigate>}
     <div className='bg-white mx-auto mt-12 max-w-7xl px-4 sm:px-6 lg:px-8'>
 
       <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
