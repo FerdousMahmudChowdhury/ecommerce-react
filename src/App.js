@@ -29,7 +29,7 @@ import AdminProductFormPage from './pages/AdminProductFormPage';
 import AdminOrdersPage from './pages/AdminOrdersPage';
 import { positions, Provider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
-
+import StripeCheckout from './pages/StripeCheckout';
 
 const options = {
   timeout: 5000,
@@ -131,6 +131,14 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/stripe-checkout/',
+    element: (
+      <Protected>
+        <StripeCheckout></StripeCheckout>
+      </Protected>
+    ),
+  },
+  {
     path: "logout",
     element: <Logout></Logout>
   },
@@ -150,9 +158,9 @@ function App() {
   const userChecked = useSelector(selectUserChecked);
 
 
-  useEffect(()=>{
-    dispatch(checkAuthAsync())
-  },[dispatch])
+  useEffect(() => {
+    dispatch(checkAuthAsync());
+  }, [dispatch]);
   useEffect(() => {
     if (user) {
       dispatch(fetchItemsByUserIdAsync());
@@ -162,9 +170,11 @@ function App() {
 
   return (
     <div className="App">
- { userChecked && <Provider template={AlertTemplate} {...options}>
-          <RouterProvider router={router} />
-      </Provider>}
+  {userChecked && (
+          <Provider template={AlertTemplate} {...options}>
+            <RouterProvider router={router} />
+          </Provider>
+        )}
     </div>
   );
 }

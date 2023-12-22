@@ -6,7 +6,7 @@ import { loginUser, createUser, signOut, checkAuth } from './authAPI';
 const initialState = {
   loggedInUserToken: null, // this should only contain user identity => 'id'/'role' // this should only contain user identity => 'id'/'role'
   status: 'idle',
-  error:null,
+  error: null,
   userChecked: false
 };
 
@@ -69,14 +69,14 @@ export const counterSlice = createSlice({
         state.status = 'idle';
         state.loggedInUserToken = action.payload;
       })
-      .addCase(checkAuthAsync.pending, (state) => {
+      .addCase(loginUserAsync.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(checkAuthAsync.fulfilled, (state, action) => {
+      .addCase(loginUserAsync.fulfilled, (state, action) => {
         state.status = 'idle';
         state.loggedInUserToken = action.payload;
       })
-      .addCase(checkAuthAsync.rejected, (state, action) => {
+      .addCase(loginUserAsync.rejected, (state, action) => {
         state.status = 'idle';
         state.error = action.payload;
       })
@@ -87,28 +87,27 @@ export const counterSlice = createSlice({
         state.status = 'idle';
         state.loggedInUserToken = null
       })
-   
-    .addCase(checkAuthAsync.pending, (state) => {
-      state.status = 'loading';
-    })
-    .addCase(checkAuthAsync.fulfilled, (state, action) => {
-      state.status = 'idle';
-      state.loggedInUserToken = action.payload;
-      state.userChecked = true;
-    })
-    .addCase(checkAuthAsync.rejected, (state, action) => {
-      state.status = 'idle';
-      state.userChecked = true;
-    })
-   
-   
+      .addCase(checkAuthAsync.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(checkAuthAsync.fulfilled, (state, action) => {
+        state.status = 'idle';
+        state.loggedInUserToken = action.payload;
+        state.userChecked = true;
+      })
+      .addCase(checkAuthAsync.rejected, (state, action) => {
+        state.status = 'idle';
+        state.userChecked = true;
+      })
+
+
   },
 });
 export const selectLoggedInUser = (state) => state.auth.loggedInUserToken
 export const selectError = (state) => state.auth.error
 
 export const selectUserChecked = (state) => state.auth.userChecked;
-export const { increment} = counterSlice.actions;
+export const { increment } = counterSlice.actions;
 
 
 
