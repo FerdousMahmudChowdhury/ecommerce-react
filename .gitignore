@@ -9,6 +9,7 @@
 /coverage
 steps.js
 test.js
+data.json
 
 # production
 /build
