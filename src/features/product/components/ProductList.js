@@ -6,13 +6,13 @@ import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import { Link } from 'react-router-dom';
-import { ITEMS_PER_PAGE, discountedPrice } from '../../../app/constants';
+import { ITEMS_PER_PAGE } from '../../../app/constants';
 import { Grid } from 'react-loader-spinner';
 
 const sortOptions = [
   { name: 'Best Rating', sort: 'rating', order: 'desc', current: false },
-  { name: 'Price: Low to High', sort: 'price', order: 'asc', current: false },
-  { name: 'Price: High to Low', sort: 'price', order: 'desc', current: false },
+  { name: 'Price: Low to High', sort: 'discountPrice', order: 'asc', current: false },
+  { name: 'Price: High to Low', sort: 'discountPrice', order: 'desc', current: false },
 ]
 
 function classNames(...classes) {
@@ -444,7 +444,7 @@ const ProductGrid = ({ products,status }) => {
                 </div>
                 <div>
 
-                  <p className="text-sm font-medium text-gray-900">${discountedPrice(product)}</p>
+                  <p className="text-sm font-medium text-gray-900"> ${product.discountPrice}</p>
                   <p className="text-sm font-medium text-gray-400 line-through">${product.price}</p>
                 </div>
               </div>

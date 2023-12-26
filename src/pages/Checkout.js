@@ -1,12 +1,11 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom';
-import { deleteItemFromCartAsync, selectItems, updateCartAsync } from '../features/cart/cartSlice';
+import { deleteItemFromCartAsync, selectItems, selectStatus, updateCartAsync } from '../features/cart/cartSlice';
 import { useForm } from 'react-hook-form';
 import { updateUserAsync } from '../features/user/userSlice';
 import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
-
-import { discountedPrice } from '../app/constants';
+import { Grid } from 'react-loader-spinner';
 import { selectUserInfo } from '../features/user/userSlice';
 
 
@@ -17,18 +16,19 @@ const Checkout = () => {
 
     const dispatch = useDispatch()
     const { register, handleSubmit, reset, watch, formState: { errors }, } = useForm()
-
+    const status = useSelector(selectStatus);
     const user = useSelector(selectUserInfo)
     const items = useSelector(selectItems)
     const currentOrder = useSelector(selectCurrentOrder)
     const totalAmount = items.reduce(
-        (amount, item) => discountedPrice(item.product  ) * item.quantity + amount, 0)
-    const totalItems = items.reduce((total, item) => item.quantity + total, 0)
+        (amount, item) => item.product.discountPrice * item.quantity + amount,
+    0)
+        const totalItems = items.reduce((total, item) => item.quantity + total, 0);
     const [selectedAddresses, setSelectedAddresses] = useState(null)
-    const [paymentMethod, setPaymentMethod] = useState('cash')  
+    const [paymentMethod, setPaymentMethod] = useState('cash')
 
     const handleQuantity = (e, item) => {
-        dispatch(updateCartAsync({ id:item.id, quantity: +e.target.value }));
+        dispatch(updateCartAsync({ id: item.id, quantity: +e.target.value }));
     };
     const handleRemove = (e, id) => {
         dispatch(deleteItemFromCartAsync(id))
@@ -41,7 +41,7 @@ const Checkout = () => {
     }
     const handleOrder = (e) => {
         if (selectedAddresses && paymentMethod) {
-            const order = { items, totalAmount, totalItems, user:user.id, paymentMethod, selectedAddresses, status: 'pending' }
+            const order = { items, totalAmount, totalItems, user: user.id, paymentMethod, selectedAddresses, status: 'pending' }
             dispatch(createOrderAsync(order))
             // TODO : redirect to order success page
             // TODO : clear cart after order
@@ -55,14 +55,25 @@ const Checkout = () => {
     return (
         <>
             {!items.length && <Navigate to={"/"} replace={true}></Navigate>}
-            {currentOrder && currentOrder.paymentMethod ==='cash' && (<Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>)}
-            {currentOrder &&  currentOrder.paymentMethod ==='card' && (
-        <Navigate
-          to={`/stripe-checkout/`}
-          replace={true}
-        ></Navigate>
-      )}
-            <div className="mx-auto max-w-7xl px-0 sm:px-0 lg:px-0 ">
+            {currentOrder && currentOrder.paymentMethod === 'cash' && (<Navigate to={`/order-success/${currentOrder.id}`} replace={true}></Navigate>)}
+            {currentOrder && currentOrder.paymentMethod === 'card' && (
+                <Navigate
+                    to={`/stripe-checkout/`}
+                    replace={true}
+                ></Navigate>
+            )}
+            {status === 'loading' ? (
+                <Grid
+                    height="80"
+                    width="80"
+                    color="rgb(79, 70, 229) "
+                    ariaLabel="grid-loading"
+                    radius="12.5"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                />
+            ) : <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
                 <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-5">
                     <div className="lg:col-span-3">
@@ -290,9 +301,11 @@ const Checkout = () => {
                                                     <div>
                                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                                             <h3>
-                                                            <a href={item.product.id}>{item.product.title}</a>
+                                                                <a href={item.product.id}>{item.product.title}</a>
                                                             </h3>
-                                                            <p className="ml-4">${discountedPrice(item.product)}</p>
+                                                            <p className="ml-4">
+                                ${item.product.discountPrice}
+                              </p>
                                                         </div>
                                                         <p className="mt-1 text-sm text-gray-500">{item.product.brand}</p>
                                                     </div>
@@ -361,7 +374,7 @@ const Checkout = () => {
                     </div>
 
                 </div>
-            </div>
+            </div>}
         </>
 
     );
