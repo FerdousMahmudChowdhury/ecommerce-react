@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, Navigate } from 'react-router-dom';
-import { deleteItemFromCartAsync, selectItems, selectStatus, updateCartAsync } from '../features/cart/cartSlice';
+import { deleteItemFromCartAsync, selectItems,  updateCartAsync } from '../features/cart/cartSlice';
 import { useForm } from 'react-hook-form';
 import { updateUserAsync } from '../features/user/userSlice';
-import { createOrderAsync, selectCurrentOrder } from '../features/order/orderSlice';
+import { createOrderAsync,selectStatus, selectCurrentOrder } from '../features/order/orderSlice';
 import { Grid } from 'react-loader-spinner';
 import { selectUserInfo } from '../features/user/userSlice';
 
