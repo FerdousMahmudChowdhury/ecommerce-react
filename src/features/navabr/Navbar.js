@@ -69,7 +69,7 @@ const Navbar = ({ children }) => {
                                     </div>
                                     <div className="hidden md:block">
                                         <div className="ml-4 flex items-center md:ml-6">
-                                           <Link to={'cart'}> <button
+                                           <Link to={'/cart'}> <button
                                                 type="button"
                                                 className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                             >
@@ -164,7 +164,7 @@ const Navbar = ({ children }) => {
                                                 {userInfo.name}</div>
                                             <div className="text-sm font-medium leading-none text-gray-400">{userInfo.email}</div>
                                         </div>
-                                        <Link to={'cart'}><button
+                                        <Link to={'/cart'}><button
                                             type="button"
                                             className="relative ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                                         >
